@@ -147,7 +147,7 @@ body {
 }
 
 .marker-popover[hidden] {
-    display: none;
+    display: none !important;
 }
 
 @keyframes popoverFadeIn {

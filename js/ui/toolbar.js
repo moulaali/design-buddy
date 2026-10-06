@@ -128,6 +128,7 @@ export function mountToolbar() {
                 markerPopover.hidden = !markerPopover.hidden;
             } else {
                 setTool('pen');
+                markerPopover.hidden = false;
             }
             return;
         }
@@ -135,10 +136,14 @@ export function mountToolbar() {
         setTool(btn.dataset.tool);
     });
 
-    penBtn.addEventListener('contextmenu', (e) => {
+    dock.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        setTool('pen');
-        markerPopover.hidden = false;
+        e.stopPropagation();
+        const penTarget = e.target.closest('#markerToolWrap');
+        if (penTarget) {
+            setTool('pen');
+            markerPopover.hidden = !markerPopover.hidden;
+        }
     });
 
     collapseBtn.addEventListener('click', () => {
