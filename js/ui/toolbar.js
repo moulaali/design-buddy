@@ -8,8 +8,8 @@ const dock = document.getElementById('dock');
 const toolbar = document.getElementById('toolbar');
 const moreMenu = document.getElementById('moreMenu');
 const collapseBtn = document.getElementById('collapseBtn');
-const penCombo = document.getElementById('penCombo');
 const penBtn = document.getElementById('penBtn');
+const penDot = document.getElementById('penDot');
 const penCaretBtn = document.getElementById('penCaretBtn');
 const penPopover = document.getElementById('penPopover');
 const penSwatches = document.getElementById('penSwatches');
@@ -31,7 +31,7 @@ const actionBtn = (name) => dock.querySelector(`[data-action="${name}"]`);
 export function setPenColor(color) {
     state.penColor = color;
     localStorage.setItem('design-buddy-pen-color', color);
-    if (penBtn) penBtn.style.setProperty('--pen-color', color);
+    if (penDot) penDot.style.background = color;
 
     penSwatches.querySelectorAll('.pen-swatch').forEach(s => {
         s.classList.toggle('active', s.dataset.color.toLowerCase() === color.toLowerCase());
@@ -67,11 +67,11 @@ function update() {
         btn.classList.toggle('active', btn.dataset.tool === state.tool);
     });
 
-    if (penCombo) {
-        penCombo.classList.toggle('active', state.tool === 'pen');
+    if (penDot) {
+        penDot.style.background = state.penColor || '#ef4444';
     }
-    if (penBtn) {
-        penBtn.style.setProperty('--pen-color', state.penColor || '#ef4444');
+    if (penCaretBtn) {
+        penCaretBtn.classList.toggle('active', state.tool === 'pen');
     }
     if (state.tool !== 'pen' && penPopover) {
         penPopover.hidden = true;
@@ -122,6 +122,17 @@ export function mountToolbar() {
     toolbar.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-tool]');
         if (!btn) return;
+
+        if (btn.dataset.tool === 'pen') {
+            if (state.tool === 'pen') {
+                penPopover.hidden = !penPopover.hidden;
+            } else {
+                setTool('pen');
+                penPopover.hidden = false;
+            }
+            return;
+        }
+
         setTool(btn.dataset.tool);
     });
 
@@ -146,7 +157,9 @@ export function mountToolbar() {
 
     document.addEventListener('pointerdown', (e) => {
         if (!e.target.closest('.menu-wrap')) moreMenu.hidden = true;
-        if (!e.target.closest('#penCombo')) penPopover.hidden = true;
+        if (!e.target.closest('#penBtn') && !e.target.closest('#penCaretBtn') && !e.target.closest('#penPopover')) {
+            penPopover.hidden = true;
+        }
     });
 
     subscribe(update);
