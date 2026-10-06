@@ -33,19 +33,15 @@ export const FILL_COLORS = [
     { name: 'Gray', color: '#e5e7eb' }
 ];
 
-export const MARKER_COLORS = [
-    { name: 'Red', color: '#e02424' },
-    { name: 'Coral', color: '#ea580c' },
+export const PEN_COLORS = [
+    { name: 'Black', color: '#1e1e1e' },
+    { name: 'Gray', color: '#71717a' },
+    { name: 'Red', color: '#ef4444' },
     { name: 'Orange', color: '#f97316' },
-    { name: 'Amber', color: '#eab308' },
-    { name: 'Green', color: '#16a34a' },
-    { name: 'Teal', color: '#0d9488' },
-    { name: 'Sky', color: '#0284c7' },
-    { name: 'Blue', color: '#2563eb' },
-    { name: 'Purple', color: '#7c3aed' },
-    { name: 'Pink', color: '#db2777' },
-    { name: 'Black', color: '#18181b' },
-    { name: 'Gray', color: '#64748b' }
+    { name: 'Yellow', color: '#eab308' },
+    { name: 'Green', color: '#22c55e' },
+    { name: 'Blue', color: '#3b82f6' },
+    { name: 'Purple', color: '#a855f7' }
 ];
 
 export const TOOL_SHORTCUTS = {

@@ -6,7 +6,7 @@ export const state = {
     gesture: null,
     spaceDown: false,
     editingId: null,
-    penColor: localStorage.getItem('design-buddy-pen-color') || '#e02424',
+    penColor: localStorage.getItem('design-buddy-pen-color') || '#ef4444',
     penWidth: Number(localStorage.getItem('design-buddy-pen-width')) || 3.5
 };
 

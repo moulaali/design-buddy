@@ -99,125 +99,157 @@ body {
     stroke-linejoin: round;
 }
 
-.marker-tool-wrap {
+.tool-combo {
     position: relative;
     display: inline-flex;
+    align-items: center;
+    border-radius: 7px;
+    transition: background 0.15s;
 }
 
-.tool-btn.pen-btn {
+.tool-combo:hover {
+    background: #eef0f3;
+}
+
+.tool-combo .tool-btn.pen-btn {
     position: relative;
+    width: 30px;
+    height: 34px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.tool-caret-btn {
+    width: 14px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    padding: 0;
+    margin-left: -2px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.tool-caret-btn svg {
+    width: 10px;
+    height: 10px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tool-caret-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: #111;
+}
+
+.tool-combo.active {
+    background: #2f80ed;
+}
+
+.tool-combo.active .tool-btn.pen-btn,
+.tool-combo.active .tool-caret-btn {
+    color: #fff;
+    background: transparent;
+}
+
+.tool-combo.active .tool-caret-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 
 .pen-color-pip {
     position: absolute;
-    bottom: 4px;
-    right: 4px;
+    bottom: 3px;
+    right: 3px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--marker-color, #e02424);
+    background: var(--pen-color, #ef4444);
     box-shadow: 0 0 0 1px #fff;
     pointer-events: none;
-    transition: background 0.15s, transform 0.15s;
+    transition: background 0.15s;
 }
 
-.tool-btn.pen-btn.active .pen-color-pip {
-    box-shadow: 0 0 0 1.5px #2f80ed;
+.tool-combo.active .pen-color-pip {
+    box-shadow: 0 0 0 1px #2f80ed;
 }
 
-.marker-popover {
+.pen-popover {
     position: absolute;
-    bottom: calc(100% + 12px);
+    bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 14px;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06);
-    padding: 10px;
-    width: 196px;
-    z-index: 250;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    z-index: 300;
     user-select: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    animation: popoverFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    gap: 7px;
 }
 
-.marker-popover[hidden] {
+.pen-popover[hidden] {
     display: none !important;
 }
 
-@keyframes popoverFadeIn {
-    from { opacity: 0; transform: translate(-50%, 6px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-.marker-popover-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #64748b;
-    padding: 0 2px;
-}
-
-.marker-swatches {
+.pen-swatches {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 24px);
     gap: 6px;
 }
 
-.marker-swatch {
+.pen-swatch {
     width: 24px;
     height: 24px;
     border-radius: 50%;
     border: 2px solid #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
     padding: 0;
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
-.marker-swatch:hover {
+.pen-swatch:hover {
     transform: scale(1.15);
 }
 
-.marker-swatch.active {
-    box-shadow: 0 0 0 2.5px #2f80ed;
-    transform: scale(1.12);
+.pen-swatch.active {
+    box-shadow: 0 0 0 2px #2f80ed;
+    transform: scale(1.1);
 }
 
-.marker-popover-divider {
+.pen-popover-divider {
     height: 1px;
-    background: #e2e8f0;
-    margin: 2px 0;
+    background: #f1f2f4;
 }
 
-.marker-controls-row {
+.pen-sizes {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.marker-sizes {
-    display: flex;
-    align-items: center;
-    background: #f1f5f9;
+    background: #f1f2f4;
     padding: 2px;
-    border-radius: 8px;
+    border-radius: 6px;
     gap: 2px;
 }
 
-.marker-size-btn {
-    width: 28px;
-    height: 26px;
+.pen-size-btn {
+    flex: 1;
+    height: 22px;
     border: none;
     background: transparent;
-    border-radius: 6px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,13 +257,13 @@ body {
     transition: background 0.1s;
 }
 
-.marker-size-btn:hover {
+.pen-size-btn:hover {
     background: rgba(0, 0, 0, 0.05);
 }
 
-.marker-size-btn.active {
+.pen-size-btn.active {
     background: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 .size-dot {
@@ -239,35 +271,8 @@ body {
     border-radius: 50%;
 }
 .size-dot.sm { width: 3px; height: 3px; }
-.size-dot.md { width: 5.5px; height: 5.5px; }
-.size-dot.lg { width: 9px; height: 9px; }
-
-.marker-color-custom {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 0 0 1.5px #fff;
-    overflow: hidden;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform 0.1s;
-}
-
-.marker-color-custom:hover {
-    transform: scale(1.12);
-}
-
-.marker-color-custom input[type="color"] {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    opacity: 0;
-    cursor: pointer;
-}
+.size-dot.md { width: 5px; height: 5px; }
+.size-dot.lg { width: 8px; height: 8px; }
 
 .icon-btn svg {
     width: 15px;
