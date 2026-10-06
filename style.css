@@ -99,6 +99,176 @@ body {
     stroke-linejoin: round;
 }
 
+.marker-tool-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.tool-btn.pen-btn {
+    position: relative;
+}
+
+.pen-color-pip {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--marker-color, #e02424);
+    box-shadow: 0 0 0 1px #fff;
+    pointer-events: none;
+    transition: background 0.15s, transform 0.15s;
+}
+
+.tool-btn.pen-btn.active .pen-color-pip {
+    box-shadow: 0 0 0 1.5px #2f80ed;
+}
+
+.marker-popover {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06);
+    padding: 10px;
+    width: 196px;
+    z-index: 250;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: popoverFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marker-popover[hidden] {
+    display: none;
+}
+
+@keyframes popoverFadeIn {
+    from { opacity: 0; transform: translate(-50%, 6px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.marker-popover-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    padding: 0 2px;
+}
+
+.marker-swatches {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+}
+
+.marker-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    padding: 0;
+}
+
+.marker-swatch:hover {
+    transform: scale(1.15);
+}
+
+.marker-swatch.active {
+    box-shadow: 0 0 0 2.5px #2f80ed;
+    transform: scale(1.12);
+}
+
+.marker-popover-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 2px 0;
+}
+
+.marker-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.marker-sizes {
+    display: flex;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 2px;
+    border-radius: 8px;
+    gap: 2px;
+}
+
+.marker-size-btn {
+    width: 28px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.marker-size-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.marker-size-btn.active {
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.size-dot {
+    background: #334155;
+    border-radius: 50%;
+}
+.size-dot.sm { width: 3px; height: 3px; }
+.size-dot.md { width: 5.5px; height: 5.5px; }
+.size-dot.lg { width: 9px; height: 9px; }
+
+.marker-color-custom {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 0 0 1.5px #fff;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.1s;
+}
+
+.marker-color-custom:hover {
+    transform: scale(1.12);
+}
+
+.marker-color-custom input[type="color"] {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    cursor: pointer;
+}
+
 .icon-btn svg {
     width: 15px;
     height: 15px;

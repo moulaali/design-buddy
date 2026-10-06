@@ -5,7 +5,9 @@ export const state = {
     camera: { x: 0, y: 0, zoom: 1 },
     gesture: null,
     spaceDown: false,
-    editingId: null
+    editingId: null,
+    penColor: localStorage.getItem('design-buddy-pen-color') || '#e02424',
+    penWidth: Number(localStorage.getItem('design-buddy-pen-width')) || 3.5
 };
 
 const listeners = new Set();

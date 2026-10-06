@@ -23,21 +23,23 @@ registerShape({
         c.stroke();
     },
     bounds(s) {
+        const sw = (s.strokeWidth || 3.5) / 2;
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         for (const p of s.points) {
             minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
             maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);
         }
-        return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+        return { x: minX - sw, y: minY - sw, w: maxX - minX + sw * 2, h: maxY - minY + sw * 2 };
     },
     move(s, dx, dy) {
         s.points.forEach(p => { p.x += dx; p.y += dy; });
     },
     hitTest(s, p, tol) {
+        const totalTol = tol + (s.strokeWidth || 3.5) / 2;
         const pts = s.points;
-        if (pts.length === 1) return Math.hypot(p.x - pts[0].x, p.y - pts[0].y) <= tol;
+        if (pts.length === 1) return Math.hypot(p.x - pts[0].x, p.y - pts[0].y) <= totalTol;
         for (let j = 1; j < pts.length; j++) {
-            if (distToSegment(p, pts[j - 1], pts[j]) <= tol) return true;
+            if (distToSegment(p, pts[j - 1], pts[j]) <= totalTol) return true;
         }
         return false;
     }

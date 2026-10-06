@@ -50,9 +50,9 @@ export function drawShape(c, s) {
     const d = getDef(s);
     if (!d) return;
     c.save();
-    c.strokeStyle = STROKE;
-    c.fillStyle = STROKE;
-    c.lineWidth = STROKE_WIDTH;
+    c.strokeStyle = s.color || STROKE;
+    c.fillStyle = s.color || STROKE;
+    c.lineWidth = s.strokeWidth || STROKE_WIDTH;
     c.lineCap = 'round';
     c.lineJoin = 'round';
     d.draw(c, s);

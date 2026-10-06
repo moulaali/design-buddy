@@ -10,7 +10,13 @@ registerTool({
     cursor: PEN_CURSOR,
     onDown(p) {
         const before = snapshot();
-        const s = addShape({ id: uid(), type: 'pen', points: [p] });
+        const s = addShape({
+            id: uid(),
+            type: 'pen',
+            color: state.penColor || '#e02424',
+            strokeWidth: state.penWidth || 3.5,
+            points: [p]
+        });
         state.selectedIds = new Set();
         return {
             onMove(q) {
