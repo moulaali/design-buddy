@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Buddy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <textarea id="editor" class="editor" spellcheck="false"></textarea>
+    <input type="file" id="imageInput" accept="image/*" hidden>
+
+    <div class="context-menu" id="contextMenu" hidden>
+        <div class="ctx-item has-submenu" id="fillItem">
+            <svg class="ctx-icon" viewBox="0 0 24 24"><path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z"/><path d="m5 2 5 5"/><path d="M2 13h15"/><path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.4 2-4 .3 1.6 2 2.4 2 4Z"/></svg>
+            <span class="ctx-label">Fill color</span>
+            <svg class="ctx-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+            <div class="submenu">
+                <div class="submenu-panel">
+                    <div class="swatches" id="swatches"></div>
+                    <button class="ctx-item no-fill" data-fill="">
+                        <span class="swatch swatch-none"></span>
+                        <span class="ctx-label">No fill</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button class="ctx-item" data-ctx="duplicate">
+            <svg class="ctx-icon" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span class="ctx-label">Duplicate</span>
+            <kbd>⌘D</kbd>
+        </button>
+        <div class="ctx-sep"></div>
+        <button class="ctx-item danger" data-ctx="delete">
+            <svg class="ctx-icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            <span class="ctx-label">Delete</span>
+            <kbd>⌫</kbd>
+        </button>
+    </div>
+
+    <div class="dock" id="dock">
+        <div class="action-bar">
+            <button class="icon-btn" data-action="undo" title="Undo (⌘Z)">
+                <svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5 5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+            </button>
+            <button class="icon-btn" data-action="redo" title="Redo (⌘⇧Z)">
+                <svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20H13"/></svg>
+            </button>
+            <button class="icon-btn" data-action="delete" title="Delete (Del)">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            </button>
+            <button class="icon-btn" data-action="duplicate" title="Duplicate (⌘D)">
+                <svg viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+            <div class="menu-wrap">
+                <button class="icon-btn" data-action="more" title="More">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                </button>
+                <div class="menu" id="moreMenu" hidden>
+                    <button data-action="export">Export as PNG</button>
+                    <button data-action="reset-zoom">Reset zoom</button>
+                    <button data-action="clear" class="danger">Clear canvas</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar" id="toolbar">
+            <button class="tool-btn active" data-tool="select" title="Select (V)">
+                <svg viewBox="0 0 24 24"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="hand" title="Hand (H)">
+                <svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="pen" title="Draw (P)">
+                <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="eraser" title="Eraser (E)">
+                <svg viewBox="0 0 24 24"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="arrow" title="Arrow (A)">
+                <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="text" title="Text (T)">
+                <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="sticky" title="Sticky note (N)">
+                <svg viewBox="0 0 24 24"><path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="image" title="Image (I)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="rect" title="Rectangle (R)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="ellipse" title="Circle (O)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="cylinder" title="Database / Storage (D)">
+                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            </button>
+            <span class="toolbar-divider"></span>
+            <button class="tool-btn magic-btn" data-action="beautify" title="Beautify diagram (B)">
+                <svg viewBox="0 0 24 24"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>
+            </button>
+            <button class="tool-btn collapse-btn" id="collapseBtn" title="Toggle actions">
+                <svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
